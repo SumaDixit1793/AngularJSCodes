@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="myCtrl">
+  <p>Student Web Page Basic with Validation</p>
+  <form name="myForm">
+  <p> First Name : <input type="text" name="firstname" ng-model="firstname" required> </p>  
+  <p> Last Name : <input type="text" name="lastname" ng-model="lastname" required> </p>  
+  <p> Age : <input type="number" name="age" ng-model="age" required> </p>  
+  <p> Email : <input type="email" name="email" ng-model="email" required> </p>  
+  <p> Highest Education completed <select ng-model="selectedName" ng-options="x for x in names" required>
+  </select></p>
+  <p> Grade method <select ng-change="grade_type_selected()" ng-model="selectedtype" name="gradetype" ng-options="x for x in types" required>
+  </select></p>
+  <div>
+   <p ng-bind-html="item"></p>
+  </div>
+  <p> Submit <input type="button" ng-click="result()" ng-model="result" name="result" value="Submit"></p>
+   <div>
+   <p ng-bind-html="item1"></p>
+  </div>
+  </form>
+</body>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', [ '$scope', '$sce', function($scope, $sce) {
+  $scope.names = ["High School", "College", "Masters", "Phd"];
+  $scope.types = ["CGPA(out of 4.0)", "Percentage(100)", "Letters(A-C)"]
+  $scope.grade_type_selected = function()
+  {
+	
+	if($scope.selectedtype == "CGPA(out of 4.0)")
+	{
+		$scope.item = $sce.trustAsHtml("<input type=\"number\" name=\"cgpa\" ng-model=\"grade\" min=\"1\" max=\"4\" required>");
+	}
+	else if($scope.selectedtype == "Percentage(100)")
+	{
+		$scope.item = $sce.trustAsHtml("<input type=\"number\" name=\"percentage\" ng-model=\"grade\" min=\"35\" max=\"100\" required>");
+	}
+	else if($scope.selectedtype == "Letters(A-C)")
+	{
+		$scope.item = $sce.trustAsHtml("Choose your grade letter: <input type=\"radio\" ng-model=\"grade\" value=\"A\">A <input type=\"radio\" ng-model=\"gradeletter\" value=\"B\">B <input type=\"radio\" ng-model=\"gradeletter\" value=\"C\">C");
+		
+	}
+  }
+  $scope.result = function()
+  {
+	$scope.item1 = $sce.trustAsHtml("You have successfully submitted the form");
+  }
+}]);
+</script>
+</html>
